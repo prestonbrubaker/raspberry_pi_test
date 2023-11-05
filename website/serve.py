@@ -2,55 +2,51 @@ import http.server
 import socketserver
 import json
 import os
+from threading import Lock
 
 PORT = 58541
-
-
-
+data_lock = Lock()
 
 def load_data(default_data):
-    if not os.path.isfile('data.json'):
-        with open('data.json', 'w') as f:
-            json.dump(default_data, f)
-        return default_data
-    else:
-        try:
-            with open('data.json', 'r') as f:
-                return json.load(f)
-        except json.JSONDecodeError:
-            # Handle the case where the JSON is not able to be decoded
-            print("Error reading the JSON file: JSONDecodeError")
+    with data_lock:  # Ensure thread-safe file access
+        if not os.path.isfile('data.json'):
+            with open('data.json', 'w') as f:
+                json.dump(default_data, f)
             return default_data
+        else:
+            try:
+                with open('data.json', 'r') as f:
+                    return json.load(f)
+            except json.JSONDecodeError:
+                # Handle the case where the JSON file is corrupt or empty
+                with open('data.json', 'w') as f:
+                    json.dump(default_data, f)
+                return default_data
 
-# Usage
 # Define the default data structure at the top of your script
 default_data_structure = {
     'total_loads': 0,
-    'unique_visitors': set()
+    'unique_visitors': []
 }
-data = load_data(default_data_structure)
 
-
-# Save the current counts to a file
 def save_data(data):
-    with open('data.json', 'w') as f:
-        json.dump(data, f, indent=4)
+    with data_lock:  # Ensure thread-safe file access
+        with open('data.json', 'w') as f:
+            json.dump(data, f, indent=4)
 
-
-
-# Your update_data function
 def update_data(ip):
-    data = load_data(default_data_structure)  # Pass the default data structure as an argument
-    # ... rest of your code to update data ...
-    save_data(data)  # Assume you have a save_data function to write back to the JSON file
-
-# Now, ensure that wherever you call load_data() in your script, you're passing this default_data_structure.
+    data = load_data(default_data_structure)
+    data['total_loads'] += 1
+    if ip not in data['unique_visitors']:
+        data['unique_visitors'].append(ip)
+    save_data(data)
 
 class LoggingHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
+        self.server_version = "MyHTTP/"  # Customize the server name if desired
+        self.sys_version = ""  # Hide the Python version
         # Update data with the IP of the client making the request
         update_data(self.client_address[0])
-        
         # Call superclass method to actually handle the request
         super().do_GET()
 
