@@ -8,8 +8,8 @@ function fetchData() {
       console.log('Number of unique devices:', data.unique_ips.length);
 
       // If you have elements in your HTML to display these values, you can update them like this:
-      // document.getElementById('total-loads').textContent = data.total_loads;
-      // document.getElementById('unique-devices').textContent = data.unique_ips.length;
+      document.getElementById('total-loads').textContent = data.total_loads;
+      document.getElementById('unique-devices').textContent = data.unique_ips.length;
     })
     .catch(error => {
       // Handle any errors here
