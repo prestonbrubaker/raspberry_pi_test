@@ -3,13 +3,9 @@ function fetchData() {
   fetch('data.json')
     .then(response => response.json()) // Parse the JSON from the response
     .then(data => {
-      // Log the data or update the DOM elements
-      console.log('Total page loads:', data.total_loads);
-      console.log('Number of unique devices:', data.unique_ips.length);
-
-      // If you have elements in your HTML to display these values, you can update them like this:
+      // Update the DOM elements with the data
       document.getElementById('total-loads').textContent = data.total_loads;
-      document.getElementById('unique-devices').textContent = data.unique_ips.length;
+      document.getElementById('unique-devices').textContent = data.unique_visitors.length;
     })
     .catch(error => {
       // Handle any errors here
@@ -19,4 +15,3 @@ function fetchData() {
 
 // Call the function when the script loads
 fetchData();
-
