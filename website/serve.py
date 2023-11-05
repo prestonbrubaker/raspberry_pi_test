@@ -3,55 +3,50 @@ import http.server
 import socketserver
 import json
 import os
+from threading import Lock
 
 PORT = 58541
-
-
+data_lock = Lock()
 
 def load_data(default_data):
-    if not os.path.isfile('data.json'):
-        with open('data.json', 'w') as f:
-            json.dump(default_data, f)
-        return default_data
-    else:
-        try:
-            with open('data.json', 'r') as f:
-                return json.load(f)
-        except json.JSONDecodeError:
-            # Handle the case where the JSON is not able to be decoded
-            print("Error reading the JSON file: JSONDecodeError")
+    with data_lock:
+        if not os.path.isfile('data.json'):
+            with open('data.json', 'w') as f:
+                json.dump(default_data, f)
             return default_data
+        else:
+            try:
+                with open('data.json', 'r') as f:
+                    return json.load(f)
+            except json.JSONDecodeError:
+                print("Error reading the JSON file: JSONDecodeError")
+                with open('data.json', 'w') as f:
+                    json.dump(default_data, f)
+                return default_data
 
-# Usage
 default_data_structure = {
     'total_loads': 0,
-    'unique_visitors': set()
+    'unique_visitors': []
 }
-data = load_data(default_data_structure)
 
-
-# Save the current counts to a file
 def save_data(data):
-    with open('data.json', 'w') as f:
-        json.dump(data, f, indent=4)
+    with data_lock:
+        with open('data.json', 'w') as f:
+            json.dump(data, f, indent=4)
 
-# Update the counts and save to the file
 def update_data(ip):
-    data = load_data()
+    data = load_data(default_data_structure)
     data['total_loads'] += 1
-    data['unique_ips'].add(ip)
+    if ip not in data['unique_visitors']:
+        data['unique_visitors'].append(ip)
     save_data(data)
 
 class LoggingHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        # Update data with the IP of the client making the request
         update_data(self.client_address[0])
-        
-        # Call superclass method to actually handle the request
         super().do_GET()
 
     def log_message(self, format, *args):
-        # We override this method to prevent printing to the console
         pass
 
 Handler = LoggingHTTPRequestHandler
