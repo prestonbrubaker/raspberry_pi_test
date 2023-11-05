@@ -24,12 +24,11 @@ body {
                 padding: 10px 20px;
                 text-decoration: none;
                 color: white;
-                background-color: #007bff;
                 border-radius: 5px;
                 transition: background-color 0.3s;
               }
 
             .button-banner a:hover {
-                 background-color: #0056b3;          
+                 background-color: rgba(0, 0, 0, 0.5);          
         }
         
