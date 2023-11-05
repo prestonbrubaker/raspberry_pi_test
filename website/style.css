@@ -4,3 +4,11 @@ h1, p {
             padding: 5px; /* Optional: adds some space around the text */
             border-radius: 5px; /* Optional: rounds the corners of the background layer */
         }
+
+ body {
+            background-image: url('photos/thermite_background.png'); /* Reference the background image */
+            background-size: cover; /* Cover the entire page */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-attachment: fixed; /* The background is fixed with regard to the viewport */
+        }
+        
