@@ -1,1 +1,6 @@
-/* TESTER TESTER TESTER */
+h1, p {
+            color: white; /* Change text color to white or any color that contrasts well with your background */
+            background-color: rgba(0, 0, 0, 0.5); /* Optional: adds a semi-transparent layer behind text */
+            padding: 5px; /* Optional: adds some space around the text */
+            border-radius: 5px; /* Optional: rounds the corners of the background layer */
+        }
