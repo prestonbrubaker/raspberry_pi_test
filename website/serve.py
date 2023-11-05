@@ -57,5 +57,6 @@ class LoggingHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 Handler = LoggingHTTPRequestHandler
 
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print(f"Serving at port {PORT}")
+    httpd.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     httpd.serve_forever()
+
