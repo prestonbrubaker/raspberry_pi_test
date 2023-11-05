@@ -7,6 +7,7 @@ PORT = 58541
 
 
 
+
 def load_data(default_data):
     if not os.path.isfile('data.json'):
         with open('data.json', 'w') as f:
@@ -22,6 +23,7 @@ def load_data(default_data):
             return default_data
 
 # Usage
+# Define the default data structure at the top of your script
 default_data_structure = {
     'total_loads': 0,
     'unique_visitors': set()
@@ -34,12 +36,15 @@ def save_data(data):
     with open('data.json', 'w') as f:
         json.dump(data, f, indent=4)
 
-# Update the counts and save to the file
+
+
+# Your update_data function
 def update_data(ip):
-    data = load_data()
-    data['total_loads'] += 1
-    data['unique_ips'].add(ip)
-    save_data(data)
+    data = load_data(default_data_structure)  # Pass the default data structure as an argument
+    # ... rest of your code to update data ...
+    save_data(data)  # Assume you have a save_data function to write back to the JSON file
+
+# Now, ensure that wherever you call load_data() in your script, you're passing this default_data_structure.
 
 class LoggingHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
