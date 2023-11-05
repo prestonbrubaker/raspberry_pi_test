@@ -1,16 +1,33 @@
 import http.server
 import socketserver
 import json
+import os
 
 PORT = 58541
 
-# Load the existing data if available
-def load_data():
-    try:
-        with open('data.json', 'r') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return {"total_loads": 0, "unique_ips": set()}
+
+
+def load_data(default_data):
+    if not os.path.isfile('data.json'):
+        with open('data.json', 'w') as f:
+            json.dump(default_data, f)
+        return default_data
+    else:
+        try:
+            with open('data.json', 'r') as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            # Handle the case where the JSON is not able to be decoded
+            print("Error reading the JSON file: JSONDecodeError")
+            return default_data
+
+# Usage
+default_data_structure = {
+    'total_loads': 0,
+    'unique_visitors': set()
+}
+data = load_data(default_data_structure)
+
 
 # Save the current counts to a file
 def save_data(data):
