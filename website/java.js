@@ -1,5 +1,5 @@
 function fetchData() {
-  fetch('data.json')
+  fetch('data.json?' + new Date().getTime())  // Cache-busting query string
     .then(response => response.json())
     .then(data => {
       document.getElementById('total-loads').textContent = data.total_loads;
@@ -11,3 +11,4 @@ function fetchData() {
 }
 
 fetchData();
+
