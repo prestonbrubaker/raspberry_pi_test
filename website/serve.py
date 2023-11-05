@@ -58,5 +58,5 @@ Handler = LoggingHTTPRequestHandler
 
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
     httpd.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    print(f"Serving at port {PORT}")
     httpd.serve_forever()
-
