@@ -1,34 +1,38 @@
-head {
-h1, p {
-            color: white; /* Change text color to white or any color that contrasts well with your background */
-            background-color: rgba(0, 0, 0, 0.5); /* Optional: adds a semi-transparent layer behind text */
-            padding: 5px; /* Optional: adds some space around the text */
-            border-radius: 5px; /* Optional: rounds the corners of the background layer */
-        }
+/* This will apply styles to <h1> and <p> elements within the body */
+body h1,
+body p {
+  color: white; /* Change text color to white or any color that contrasts well with your background */
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: adds a semi-transparent layer behind text */
+  padding: 5px; /* Optional: adds some space around the text */
+  border-radius: 5px; /* Optional: rounds the corners of the background layer */
 }
 
+/* This sets the background for the body */
 body {
-            background-image: url('photos/thermite_background.png'); /* Reference the background image */
-            background-size: cover; /* Cover the entire page */
-            background-repeat: no-repeat; /* Do not repeat the image */
-            background-attachment: fixed; /* The background is fixed with regard to the viewport */
-            
-            .button-banner {
-                display: flex;
-                justify-content: space-around;
-                margin: 20px;
-              }
+  background-image: url('photos/thermite_background.png'); /* Reference the background image */
+  background-size: cover; /* Cover the entire page */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-attachment: fixed; /* The background is fixed with regard to the viewport */
+}
 
-            .button-banner a {
-                text-align: center;
-                padding: 10px 20px;
-                text-decoration: none;
-                color: white;
-                border-radius: 5px;
-                transition: background-color 0.3s;
-              }
+/* This styles the button-banner class */
+.button-banner {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}
 
-            .button-banner a:hover {
-                 background-color: rgba(0, 0, 0, 0.5);          
-        }
-        
+/* This styles the <a> tags within the button-banner class */
+.button-banner a {
+  text-align: center;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+/* This adds a hover effect to the <a> tags within the button-banner class */
+.button-banner a:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
